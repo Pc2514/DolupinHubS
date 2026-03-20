@@ -1,22 +1,115 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>セキュリティ確認</title>
+  <title>System Protection</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@500&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      background-color: #050505;
+      color: #00ffcc;
+      font-family: 'Share Tech Mono', monospace;
+      text-align: center;
+      margin-top: 60px;
+    }
+
+    .box {
+      border: 1px solid #00ffcc;
+      padding: 20px;
+      margin: 20px;
+      box-shadow: 0 0 15px #00ffcc;
+    }
+
+    h2 {
+      font-family: 'Orbitron', sans-serif;
+      color: #00ffcc;
+    }
+
+    button {
+      background: black;
+      color: #00ffcc;
+      border: 1px solid #00ffcc;
+      padding: 12px 24px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    button:hover {
+      background: #00ffcc;
+      color: black;
+    }
+
+    #log {
+      text-align: left;
+      margin-top: 20px;
+      font-size: 14px;
+      height: 150px;
+      overflow: hidden;
+    }
+
+    .progress {
+      margin-top: 15px;
+      font-size: 20px;
+    }
+  </style>
 </head>
 
-<body style="text-align:center; margin-top:100px; font-family:sans-serif;">
+<body>
 
-  <h2>セキュリティ確認</h2>
-  <p>処理を続行するには確認してください</p>
+  <div class="box">
+    <h2>SYSTEM PROTECTION</h2>
+    <p>異常な通信を検出しました</p>
+    <p>保護プロセスを開始してください</p>
 
-  <button onclick="go()">確認する</button>
+    <button onclick="start()">START</button>
+  </div>
 
   <script>
-    function go() {
-      document.body.innerHTML = "<h2>確認中...</h2>";
-      setTimeout(() => {
-        window.location.href = "https://youtu.be/dQw4w9WgXcQ";
-      }, 1500);
+    function start() {
+      document.body.innerHTML = `
+        <h2>SCANNING SYSTEM...</h2>
+        <div class="progress" id="prog">0%</div>
+        <div id="log"></div>
+      `;
+
+      let percent = 0;
+      let log = document.getElementById("log");
+
+      const messages = [
+        "Initializing security modules...",
+        "Checking network integrity...",
+        "Scanning system files...",
+        "Detecting anomalies...",
+        "Analyzing threats...",
+        "Encrypting connection...",
+        "Finalizing protection..."
+      ];
+
+      let msgIndex = 0;
+
+      let interval = setInterval(() => {
+        percent += Math.floor(Math.random() * 7) + 1;
+        if (percent > 100) percent = 100;
+
+        document.getElementById("prog").innerText = percent + "%";
+
+        if (msgIndex < messages.length && percent > msgIndex * 15) {
+          let p = document.createElement("div");
+          p.textContent = "> " + messages[msgIndex];
+          log.appendChild(p);
+          msgIndex++;
+        }
+
+        if (percent === 100) {
+          clearInterval(interval);
+
+          setTimeout(() => {
+            window.location.href = "https://youtu.be/dQw4w9WgXcQ";
+          }, 1000);
+        }
+
+      }, 250);
     }
   </script>
 
