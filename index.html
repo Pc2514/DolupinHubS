@@ -1,117 +1,159 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>System Protection</title>
-
-  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@500&display=swap" rel="stylesheet">
+  <title>設定</title>
 
   <style>
     body {
-      background-color: #050505;
-      color: #00ffcc;
-      font-family: 'Share Tech Mono', monospace;
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont;
+      background: #f2f2f7;
+    }
+
+    .header {
+      background: #ffffff;
+      padding: 15px;
       text-align: center;
-      margin-top: 60px;
+      font-weight: bold;
+      border-bottom: 1px solid #ccc;
     }
 
-    .box {
-      border: 1px solid #00ffcc;
-      padding: 20px;
-      margin: 20px;
-      box-shadow: 0 0 15px #00ffcc;
-    }
-
-    h2 {
-      font-family: 'Orbitron', sans-serif;
-      color: #00ffcc;
-    }
-
-    button {
-      background: black;
-      color: #00ffcc;
-      border: 1px solid #00ffcc;
-      padding: 12px 24px;
-      cursor: pointer;
+    .section {
       margin-top: 20px;
+      background: white;
     }
 
-    button:hover {
-      background: #00ffcc;
-      color: black;
+    .item {
+      padding: 15px;
+      border-bottom: 1px solid #ddd;
+      display: flex;
+      justify-content: space-between;
+      cursor: pointer;
+    }
+
+    .item:last-child {
+      border-bottom: none;
+    }
+
+    .arrow {
+      color: gray;
+    }
+
+    .danger {
+      color: red;
+      font-weight: bold;
+    }
+
+    .center {
+      text-align: center;
+      margin-top: 100px;
+      font-family: monospace;
     }
 
     #log {
-      text-align: left;
-      margin-top: 20px;
       font-size: 14px;
-      height: 150px;
-      overflow: hidden;
-    }
-
-    .progress {
-      margin-top: 15px;
-      font-size: 20px;
+      margin-top: 10px;
     }
   </style>
 </head>
 
 <body>
 
-  <div class="box">
-    <h2>SYSTEM PROTECTION</h2>
-    <p>異常な通信を検出しました</p>
-    <p>保護プロセスを開始してください</p>
+<div id="app">
 
-    <button onclick="start()">START</button>
+  <div class="header">設定</div>
+
+  <div class="section">
+    <div class="item" onclick="start()">
+      セキュリティとプライバシー
+      <span class="arrow">></span>
+    </div>
   </div>
 
-  <script>
-    function start() {
-      document.body.innerHTML = `
-        <h2>SCANNING SYSTEM...</h2>
-        <div class="progress" id="prog">0%</div>
-        <div id="log"></div>
-      `;
+  <div class="section">
+    <div class="item">一般 <span class="arrow">></span></div>
+    <div class="item">画面表示 <span class="arrow">></span></div>
+    <div class="item">バッテリー <span class="arrow">></span></div>
+  </div>
 
-      let percent = 0;
-      let log = document.getElementById("log");
+</div>
 
-      const messages = [
-        "Initializing security modules...",
-        "Checking network integrity...",
-        "Scanning system files...",
-        "Detecting anomalies...",
-        "Analyzing threats...",
-        "Encrypting connection...",
-        "Finalizing protection..."
-      ];
+<script>
 
-      let msgIndex = 0;
+function start() {
+  document.getElementById("app").innerHTML = `
+    <div class="header">セキュリティ</div>
+    <div class="center">
+      <h2 class="danger">異常を検出</h2>
+      <p>システム保護が必要です</p>
+      <button onclick="scan()">スキャン開始</button>
+    </div>
+  `;
+}
 
-      let interval = setInterval(() => {
-        percent += Math.floor(Math.random() * 7) + 1;
-        if (percent > 100) percent = 100;
+function scan() {
+  document.getElementById("app").innerHTML = `
+    <div class="header">スキャン中</div>
+    <div class="center">
+      <h2>0%</h2>
+      <div id="log"></div>
+    </div>
+  `;
 
-        document.getElementById("prog").innerText = percent + "%";
+  let percent = 0;
+  let log = document.getElementById("log");
 
-        if (msgIndex < messages.length && percent > msgIndex * 15) {
-          let p = document.createElement("div");
-          p.textContent = "> " + messages[msgIndex];
-          log.appendChild(p);
-          msgIndex++;
-        }
+  const msgs = [
+    "ファイルを確認中...",
+    "通信をチェック中...",
+    "異常を検出中...",
+    "保護を適用中..."
+  ];
 
-        if (percent === 100) {
-          clearInterval(interval);
+  let i = 0;
 
-          setTimeout(() => {
-            window.location.href = "https://youtu.be/dQw4w9WgXcQ";
-          }, 1000);
-        }
+  let interval = setInterval(() => {
 
-      }, 250);
+    percent += Math.floor(Math.random()*7)+1;
+    if (percent > 100) percent = 100;
+
+    document.querySelector("h2").innerText = percent + "%";
+
+    if (i < msgs.length && percent > i*20) {
+      let d = document.createElement("div");
+      d.textContent = msgs[i];
+      log.appendChild(d);
+      i++;
     }
-  </script>
+
+    if (percent >= 90 && percent < 100) {
+      clearInterval(interval);
+      setTimeout(() => finish(), 1500);
+    }
+
+    if (percent === 100) {
+      clearInterval(interval);
+      finish();
+    }
+
+  }, 300);
+}
+
+function finish() {
+  document.getElementById("app").innerHTML = `
+    <div class="header">完了</div>
+    <div class="center">
+      <h2>保護完了</h2>
+      <p>問題は解決されました</p>
+    </div>
+  `;
+
+  setTimeout(() => {
+    window.location.href = "https://youtu.be/dQw4w9WgXcQ";
+  }, 800);
+}
+
+</script>
 
 </body>
 </html>
